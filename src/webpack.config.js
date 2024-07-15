@@ -1,19 +1,34 @@
+// webpack.config.js
+
 const path = require('path');
-//const TerserPlugin = require('terser-webpack-plugin');
-console.log(path.resolve(__dirname, 'dist'))
 
 module.exports = {
-  mode: 'production',
-  entry: './src/index.js',   // Entry point of your application
+  entry: './src/index.js',
   output: {
-    filename: 'bundle.min.js',   // Name of the bundled file
-   path: "/home/runner/work/EmojiBundleTestss/EmojiBundleTestss/dist", 
-   // path: path.resolve(__dirname, 'dist'),   // Output directory for the bundled file
-    libraryTarget: 'umd',    // Set the output format as Universal Module Definition (UMD)
-    umdNamedDefine: true     // Specify named exports for UMD builds
+    path: "/home/runner/work/EmojiBundleTestss/EmojiBundleTestss/dist", 
+    filename: 'bundle.js',
+    library: {
+      type: 'module',
+    },
   },
- // optimization: {
-//    minimize: true,
- //   minimizer: [new TerserPlugin()],      // Use TerserPlugin to perform minification
-//  },
+  experiments: {
+    outputModule: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js'],
+  },
 };
