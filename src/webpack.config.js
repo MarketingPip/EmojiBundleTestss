@@ -64,7 +64,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
-    filename: 'emojiFallback2.min.js',
+    filename: 'emojiFallback3.min.js',
     library: {
       type: 'module',
     },
