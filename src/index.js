@@ -23,8 +23,8 @@ export async function ParseM3U(input = null) {
          throw new Error(`Invalid playlist provided. Must be a valid string.`);
         }
         let isURL = true;
-        if(input.trim().startsWith('#EXTM3U'){
-          isURL = false
+        if(input.trim().startsWith('#EXTM3U')){
+          isURL = false;
         }
         const playlist = await fetchAndParse(input, isURL);
         return playlist;
