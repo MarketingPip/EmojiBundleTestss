@@ -1,14 +1,18 @@
 {
-  "name": "@MarketingPipeline/Emoji-Fallback",
-  "description": "A JavaScript library that provides support for emojis on ALL web browsers!",
-  "version": "2.0.0",
-  "homepage": "https://github.com/MarketingPipeline/Emoji-Fallback.js",
+  "type": "module",
+  "name": "@MarketingPipeline/IPTV-Parser.js",
+  "version": "1.0.0",
+  "description": "A pure vanilla JavaScript library for EASILY parsing M3U / IPTV",
   "license": "MIT",
-  "main": "./dist/emoji-fallback.min.js",
+  "main": "./dist/iptv-parser.min.js",
   "author": {
     "name": "MarketingPipeline",
     "url": "https://github.com/MarketingPipeline"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarketingPipeline/IPTV-Parser.js.git"
+  }
   "scripts": {
     "build": "webpack --config ./src/webpack.config.js"
   },
