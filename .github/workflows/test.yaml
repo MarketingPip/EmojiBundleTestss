@@ -18,21 +18,10 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install dependencies
-        run: npm i
-
       - name: Build project using Webpack/Rollup
         run: |
-          npm i css-minimizer-webpack-plugin
-          npm i mini-css-extract-plugin --save-dev
-          npm i style-loader
-          npm i mustache
-          npm i html-webpack-plugin
-          npm i --save-dev css-loader
-          npm i html-loader --save-dev
-          npm i extract-loader --save-dev
-          npm i --save-dev webpack webpack-cli babel-loader @babel/core @babel/preset-env terser-webpack-plugin
           npm run build
+          npm i
 
 
       - name: Check file existence
