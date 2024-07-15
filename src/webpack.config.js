@@ -24,7 +24,12 @@ class AddLicenseAfterTerserPlugin {
                 if (err) throw err;
 
                 // Add your license text after minification (Terser)
-                const licenseText = `/* Your License Information Here */\n\n`;
+                const licenseText = `/**!
+ * @license Termino.js - A JavaScript library to make custom terminals in the browser with support for executing your own custom functions!
+ * VERSION: 2.0.0
+ * LICENSED UNDER MIT LICENSE
+ * MORE INFO CAN BE FOUND AT https://github.com/MarketingPipeline/Termino.js/
+ */\n\n`;
 
                 // Append license text to the existing file content
                 const newContent = licenseText + data;
