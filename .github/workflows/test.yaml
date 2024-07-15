@@ -44,7 +44,11 @@ jobs:
           git reset -- node_modules  # Unstage the node_modules changes
           if ! git diff --cached --quiet; then
            git diff --cached --name-only | while read -r file; do
-               commit_message="Add $file :inbox_tray:"
+               if git diff --cached --name-only -- "$file" | grep -q "^$file\$"; then
+                  commit_message="Updated $file :inbox_tray:"
+               else
+                  commit_message="Added $file :inbox_tray:"
+               fi   
                git commit -m "$commit_message" -- "$file"
            done
                
