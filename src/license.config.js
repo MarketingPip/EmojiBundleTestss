@@ -10,4 +10,6 @@ const LICENSE = `/**!
 
 const FILENAME = "emojiFallback" // used for output file name
 
-export const packageCONFIG = {LICENSE,FILENAME}
+const packageCONFIG = {LICENSE,FILENAME}
+
+module.exports = packageCONFIG
