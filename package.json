@@ -1,0 +1,20 @@
+{
+  "name": "mmjj",
+  "version": "0.0.5",
+  "description": "kkk",
+  "scripts": {
+    "build": "webpack --config ./src/webpack.config.js"
+  },
+  "dependencies": {
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "html-webpack-plugin": "^5.6.0",
+    "mustache": "^4.2.0",
+    "style-loader": "^3.3.3"
+  },
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "extract-loader": "^5.1.0",
+    "html-loader": "^4.2.0",
+    "mini-css-extract-plugin": "^2.7.6"
+  }
+}
