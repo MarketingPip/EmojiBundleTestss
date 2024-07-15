@@ -45,10 +45,12 @@ export const emojiSupported = () => {
  * Replaces Unicode emojis with image emojis using Twemoji if native emoji support is not available.
  * @param {Element|DocumentFragment} [element=document.body] - The DOM element to parse for emojis.
  * @param {string} [cdn='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'] - The CDN URL for Twemoji assets.
+ * @param {string} className - The CSS class name to apply to the replaced emoji images.
  * @returns {Promise<void>} A promise that resolves when the parsing is complete.
  * @throws {Error} If the provided element or CDN URL is invalid.
  */
-const parseEmoji = async (element = document.body, cdn = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/', className = 'emoji') => {
+export const parseEmoji = async (element = document.body, cdn = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/', className = 'emoji') => {
+  
   if (!isValidElement(element)) {
     throw new Error('Invalid element provided. Must be a valid DOM element.');
   }
@@ -59,7 +61,13 @@ const parseEmoji = async (element = document.body, cdn = 'https://cdn.jsdelivr.n
   if (!isValidString(className)) {
     throw new Error(`Invalid ClassName provided. Must be a valid string.`);
   }  
-
+  
+  const emojiSupport = emojiSupported();
+  
+  if (!emojiSupported()) {
+    return;
+  }
+  
   if (!emojiSupported()) {
     await twemoji.parse(element, {
       base: cdn
@@ -71,6 +79,7 @@ const parseEmoji = async (element = document.body, cdn = 'https://cdn.jsdelivr.n
  * Checks if emojis are supported and falls back to Twemoji if they are not.
  * @param {Element|DocumentFragment} [element] - The DOM element to parse for emojis.
  * @param {string} [cdn] - The CDN URL for Twemoji assets.
+ * @param {string} className - The CSS class name to apply to the replaced emoji images.
  * @returns {Promise<void>} A promise that resolves when the fallback is complete.
  * @throws {Error} If there is an error during the fallback process.
  */
@@ -78,6 +87,6 @@ export async function emojiFallback(element, cdn, className) {
   try {
     await parseEmoji(element, cdn, className);
   } catch (err) {
-    throw new Error(`Emoji-Fallback.js Error: ${err}`);
+    throw new Error(`Emoji-Fallback.js Error:  ${err?.message || err}`);
   }
 }
