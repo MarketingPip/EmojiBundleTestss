@@ -34,9 +34,16 @@ jobs:
           if git diff --cached --exit-code; then
             echo "No changes to commit."
           else
+            # Get current time in seconds since epoch
+            current_time=$(date +%s)
+            
             # Loop through changed files
             git diff --cached --name-only | while read -r file; do
-              if git diff --cached --name-only -- "$file" | grep -q "^$file\$"; then
+              # Get file creation time in seconds since epoch
+              file_creation_time=$(git log --diff-filter=A --format=%at -- "$file" | tail -1)
+
+              # Check if file_creation_time is older than (120 seconds)
+              if [ $((current_time - file_creation_time)) -gt 120 ]; then
                 commit_message="Updated $file :inbox_tray:"
               else
                 commit_message="Added $file :inbox_tray:"
