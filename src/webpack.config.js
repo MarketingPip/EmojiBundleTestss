@@ -29,7 +29,7 @@ class AddLicenseAfterTerserPlugin {
  * VERSION: ${packageData.version}
  * LICENSED UNDER ${packageData?.license} LICENSE
  * MORE INFO CAN BE FOUND AT https://github.com/MarketingPipeline/Termino.js/
- */\n\n`;
+ */ `;
 
                 // Append license text to the existing file content
                 const newContent = licenseText + data;
