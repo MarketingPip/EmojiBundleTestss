@@ -20,8 +20,8 @@ jobs:
 
       - name: Build project using Webpack/Rollup
         run: |
-          npm run build
           npm i
+          npm run build
 
 
       - name: Check file existence
