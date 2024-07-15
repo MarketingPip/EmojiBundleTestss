@@ -7,7 +7,7 @@ module.exports = {
   entry: './src/index.js',   // Entry point of your application
   output: {
     filename: 'bundle.min.js',   // Name of the bundled file
-   path: "/home/runner/work/BundleTest.js/BundleTest.js/dist", 
+   path: "/home/runner/work/EmojiBundleTestss/EmojiBundleTestss/dist", 
    // path: path.resolve(__dirname, 'dist'),   // Output directory for the bundled file
     libraryTarget: 'umd',    // Set the output format as Universal Module Definition (UMD)
     umdNamedDefine: true     // Specify named exports for UMD builds
