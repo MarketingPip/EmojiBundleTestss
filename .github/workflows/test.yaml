@@ -20,22 +20,8 @@ jobs:
 
       - name: Build project using Webpack/Rollup
         run: |
-          npm ci
+          npm i
           npm run build
-
-      - name: Check file existence
-        id: check_files
-        uses: andstor/file-existence-action@v2
-        with:
-          files: "package.json"
-
-      - name: Edit package.json
-        if: steps.check_files.outputs.files_exists == 'true'
-        run: |
-          # Modify the package.json file
-          # For example, you can update the version number or add a new field
-          # npm version patch -m "Updated version to %s"
-          # git push --follow-tags
 
       - name: Commit and push changes
         run: |
