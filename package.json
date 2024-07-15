@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "@MarketingPipeline/IPTV-Parser.js",
   "version": "1.0.0",
   "description": "A pure vanilla JavaScript library for EASILY parsing M3U / IPTV",
