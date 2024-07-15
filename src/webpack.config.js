@@ -59,7 +59,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
-    filename: `${packageData.FILENAME}.min.js`,
+    filename: packageData.FILENAME,
     library: {
       type: 'module',
     },
