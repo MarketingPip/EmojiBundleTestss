@@ -14,8 +14,6 @@ const LICENSE = `/**!
  * MORE INFO CAN BE FOUND AT https://github.com/MarketingPipeline/${REPONAME}/
  */`;
 
-const FILENAME = "emojiFallback"; // used for output file name
-
-const packageCONFIG = {LICENSE,FILENAME};
+const packageCONFIG = {LICENSE};
 
 module.exports = packageCONFIG
