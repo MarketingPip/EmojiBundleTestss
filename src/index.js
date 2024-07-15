@@ -1,21 +1,38 @@
 import parser from "iptv-playlist-parser";
 
+
+/**
+ * Checks if the provided string is valid.
+ * @param {string} string - The string to validate.
+ * @returns {boolean} True if the string is valid, false otherwise.
+ */
+const isValidString = (string) => {
+  return typeof string === 'string' && string.trim().length > 0;
+};
+
 /**
  * Parse M3U file from URL or string.
  *
  * @param {string} input - URL or string containing the M3U content.
- * @param {boolean} isURL - Flag indicating if the input is a URL.
  * @returns {Promise<Object>} - Parsed M3U content.
  * @throws {Error} - If parsing fails or the input is invalid.
  */
-export async function ParseM3U(input, isURL = false) {
+export async function ParseM3U(input = null) {
     try {
+        if (!isValidString(input)) {
+         throw new Error(`Invalid playlist provided. Must be a valid string.`);
+        }
+        let isURL = true;
+        if(input.trim().startsWith('#EXTM3U'){
+          isURL = false
+        }
         const playlist = await fetchAndParse(input, isURL);
         return playlist;
     } catch (err) {
-        return { error: err.message || err.iptv_parser_error };
+        throw err
     }
 }
+
 
 /**
  * Fetch and parse M3U file from URL or string.
@@ -26,10 +43,6 @@ export async function ParseM3U(input, isURL = false) {
  * @throws {Error} - If fetching or parsing fails.
  */
 async function fetchAndParse(input, isURL) {
-    if (!input) {
-        throw new Error(isURL ? "URL to fetch is required" : "Text to parse is required");
-    }
-
     let playlist = isURL ? await fetchPlaylist(input) : input;
     return validateAndParsePlaylist(playlist);
 }
@@ -56,7 +69,7 @@ async function fetchPlaylist(url) {
  * @returns {Promise<Object>} - Parsed playlist content.
  * @throws {Error} - If the playlist is invalid.
  */
-async function validateAndParsePlaylist(content) {
+export async function validateAndParsePlaylist(content) {
     const lines = content.split('\n').map((line, index) => ({ index, raw: line }));
     const firstLine = lines.find(line => line.index === 0);
 
