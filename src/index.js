@@ -85,8 +85,8 @@ export const parseEmoji = async (element = document.body, cdn = 'https://cdn.jsd
  */
 export async function emojiFallback(element, cdn, className) {
   try {
-    await parseEmoji(element, cdn, className);
+    return await parseEmoji(element, cdn, className);
   } catch (err) {
-    throw new Error(`Emoji-Fallback.js Error:  ${err?.message || err}`);
+    throw new Error(`Emoji-Fallback.js Error: ${err?.message || err}`);
   }
 }
