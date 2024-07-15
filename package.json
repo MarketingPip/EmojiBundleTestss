@@ -6,7 +6,6 @@
     "build": "webpack --config ./src/webpack.config.js"
   },
   "dependencies": {
-    "style-loader": "^4.0.0",
     "twemoji": "^14.0.2"
   },
   "devDependencies": {
