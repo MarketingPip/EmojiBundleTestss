@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const packageData = require('../package.json');
+const packageData = require('../license.config.js');
 
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -24,12 +24,7 @@ class AddLicenseAfterTerserPlugin {
                 if (err) throw err;
 
                 // Add your license text after minification (Terser)
-                const licenseText = `/**!
- * @license Termino.js - ${packageData.description}
- * VERSION: ${packageData.version}
- * LICENSED UNDER ${packageData?.license} LICENSE
- * MORE INFO CAN BE FOUND AT https://github.com/MarketingPipeline/Termino.js/
- */ `;
+                const licenseText = `${packageData.LICENSE} `;
 
                 // Append license text to the existing file content
                 const newContent = licenseText + data;
@@ -64,7 +59,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
-    filename: 'emojiFallback3.min.js',
+    filename: `${packageData.FILENAME}.min.js`,
     library: {
       type: 'module',
     },
