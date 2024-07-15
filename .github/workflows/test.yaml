@@ -1,10 +1,10 @@
-name: Build
+name: Build and Commit Changes
 
 on:
   workflow_dispatch:
-  
+
 jobs:
-  build:
+  build-and-commit:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,9 +20,8 @@ jobs:
 
       - name: Build project using Webpack/Rollup
         run: |
-          npm i
+          npm ci
           npm run build
-
 
       - name: Check file existence
         id: check_files
@@ -34,7 +33,9 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'true'
         run: |
           # Modify the package.json file
-          # For example, you can update the version number or add a new
+          # For example, you can update the version number or add a new field
+          npm version patch -m "Updated version to %s"
+          git push --follow-tags
 
       - name: Commit and push changes
         run: |
@@ -42,17 +43,19 @@ jobs:
           git config --global user.email "actions@github.com"
           git add -A
           git reset -- node_modules  # Unstage the node_modules changes
-          if ! git diff --cached --quiet; then
-           git diff --cached --name-only | while read -r file; do
-               if git diff --cached --name-only -- "$file" | grep -q "^$file\$"; then
-                  commit_message="Updated $file :inbox_tray:"
-               else
-                  commit_message="Added $file :inbox_tray:"
-               fi   
-               git commit -m "$commit_message" -- "$file"
-           done
-               
-           git push
-          else
+
+          # Check for changes
+          if git diff --cached --exit-code; then
             echo "No changes to commit."
+          else
+            # Loop through changed files
+            git diff --cached --name-only | while read -r file; do
+              if git diff --cached --name-only -- "$file" | grep -q "^$file\$"; then
+                commit_message="Updated $file :inbox_tray:"
+              else
+                commit_message="Added $file :inbox_tray:"
+              fi
+              git commit -m "$commit_message" -- "$file"
+            done
+            git push
           fi
