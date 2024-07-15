@@ -31,7 +31,7 @@ jobs:
           npm i --save-dev css-loader
           npm i html-loader --save-dev
           npm i extract-loader --save-dev
-          npm i --save-dev webpack webpack-cli babel-loader @babel/core @babel/preset-env
+          npm i --save-dev webpack webpack-cli babel-loader @babel/core @babel/preset-env terser-webpack-plugin
           npm run build
 
       - name: Minify JavaScript
