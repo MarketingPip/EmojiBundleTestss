@@ -29,24 +29,16 @@ jobs:
           git config --global user.email "actions@github.com"
           git add -A
           git reset -- node_modules  # Unstage the node_modules changes
-
-          # Check for changes
-          if git diff --cached --exit-code; then
-            echo "No changes to commit."
+          if ! git diff --cached --quiet; then
+           git diff --cached --name-only | while read -r file; do
+               commit_message="Add $file :inbox_tray:"
+               git commit -m "$commit_message" -- "$file"
+           done
+               
+           git push
           else
-            # Get current time in seconds since epoch
-            current_time=$(date +%s)
-            
-            # Loop through changed files
-            git diff --cached --name-only | while read -r file; do
-              # Get file creation time in seconds since epoch
-              file_creation_time=$(git log --diff-filter=A --format=%at -- "$file" | tail -1)
-
-              # Check if file_creation_time is older than (120 seconds)
-              if [ $((current_time - file_creation_time)) -gt 120 ]; then
-                commit_message="Updated $file :inbox_tray:"
-              else
-                commit_message="Added $file :inbox_tray:"
+            echo "No changes to commit."
+          fi
               fi
               git commit -m "$commit_message" -- "$file"
             done
