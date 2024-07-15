@@ -34,8 +34,6 @@ jobs:
           npm i --save-dev webpack webpack-cli babel-loader @babel/core @babel/preset-env terser-webpack-plugin
           npm run build
 
-      - name: Minify JavaScript
-        run: npx terser ./dist/bundle.min.js -c -m -o ./dist/bundle.min.js
 
       - name: Check file existence
         id: check_files
