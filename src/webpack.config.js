@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
   entry: './src/index.js',
   output: {
-    path: "/home/runner/work/EmojiBundleTestss/EmojiBundleTestss/dist", 
+    path: path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     library: {
       type: 'module',
