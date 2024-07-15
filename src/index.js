@@ -64,11 +64,11 @@ export const parseEmoji = async (element = document.body, cdn = 'https://cdn.jsd
   
   const emojiSupport = emojiSupported();
   
-  if (!emojiSupported()) {
+  if (emojiSupport) {
     return;
   }
   
-  if (!emojiSupported()) {
+  if (!emojiSupport) {
     await twemoji.parse(element, {
       base: cdn
     });
