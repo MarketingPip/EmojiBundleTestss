@@ -14,6 +14,6 @@ const LICENSE = `/**!
  * MORE INFO CAN BE FOUND AT https://github.com/MarketingPipeline/${REPONAME}/
  */`;
 
-const packageCONFIG = {LICENSE};
+const packageCONFIG = {LICENSE, FILENAME:packageData.main.split("/").pop()};
 
 module.exports = packageCONFIG
