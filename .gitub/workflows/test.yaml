@@ -1,0 +1,66 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history to ensure 'gh-pages' branch is available
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project using Webpack/Rollup
+        run: |
+          npm i css-minimizer-webpack-plugin
+          npm i mini-css-extract-plugin --save-dev
+          npm i style-loader
+          npm i mustache
+          npm i html-webpack-plugin
+          npm i --save-dev css-loader
+          npm i html-loader --save-dev
+          npm i extract-loader --save-dev
+          npm run build
+
+      - name: Minify JavaScript
+        run: npx terser ./dist/bundle.min.js -c -m -o ./dist/bundle.min.js
+
+      - name: Check file existence
+        id: check_files
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "package.json"
+
+      - name: Edit package.json
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: |
+          # Modify the package.json file
+          # For example, you can update the version number or add a new
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add -A
+          git reset -- node_modules  # Unstage the node_modules changes
+          if ! git diff --cached --quiet; then
+           git diff --cached --name-only | while read -r file; do
+               commit_message="Add $file :inbox_tray:"
+               git commit -m "$commit_message" -- "$file"
+           done
+               
+           git push
+          else
+            echo "No changes to commit."
+          fi
