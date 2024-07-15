@@ -1,92 +1,119 @@
-import twemoji from "twemoji";
+import parser from "iptv-playlist-parser"
 
-/**
- * Checks if the provided string is valid.
- * @param {string} string - The string to validate.
- * @returns {boolean} True if the string is valid, false otherwise.
- */
-const isValidString = (string) => {
-  return typeof string === 'string' && string.trim().length > 0;
-};
 
-/**
- * Checks if the provided element is a valid DOM element or DocumentFragment.
- * @param {Element|DocumentFragment} element - The element to validate.
- * @returns {boolean} True if the element is valid, false otherwise.
- */
-const isValidElement = (element) => {
-  return element instanceof Element || element instanceof DocumentFragment;
-};
+export async function ParseM3U(url, isURL) {
 
-/**
- * Checks if the browser supports native emoji rendering.
- * @returns {boolean} True if emojis are supported, false otherwise.
- */
-export const emojiSupported = () => {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+	/// CORE FUNCTION(s) FOR IPTV-Parser.js ///
 
-  if (!ctx || typeof ctx.fillText !== 'function') {
-    canvas.remove();
-    return false;
-  }
 
-  ctx.textBaseline = 'top';
-  ctx.font = '32px Arial';
-  ctx.fillText('\ud83d\ude03', 0, 0);
+	// Fetch and Parse IPTV / M3U 
+	async function fetchAndParse(url_or_string, isURL) {
 
-  let imageData = ctx.getImageData(16, 16, 1, 1).data;
-  imageData = imageData[0] !== 0;
-  canvas.remove();
-  return imageData;
-};
+		
+		
+		/// NO VALUE WAS PROVIDED TO PARSE... 
+		if (!url_or_string) {
+			if (isURL) {
+				throw {
+					iptv_parser_error: "URL to fetch is required"
+				}
+			} else {
+				throw {
+					iptv_parser_error: "Text to parse is required"
+				}
+			}
+		}
 
-/**
- * Replaces Unicode emojis with image emojis using Twemoji if native emoji support is not available.
- * @param {Element|DocumentFragment} [element=document.body] - The DOM element to parse for emojis.
- * @param {string} [cdn='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/'] - The CDN URL for Twemoji assets.
- * @param {string} className - The CSS class name to apply to the replaced emoji images.
- * @returns {Promise<void>} A promise that resolves when the parsing is complete.
- * @throws {Error} If the provided element or CDN URL is invalid.
- */
-export const parseEmoji = async (element = document.body, cdn = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/', className = 'emoji') => {
-  
-  if (!isValidElement(element)) {
-    throw new Error('Invalid element provided. Must be a valid DOM element.');
-  }
-  if (!isValidString(cdn)) {
-    throw new Error(`Invalid CDN URL provided. Must be a valid string.`);
-  }
-  
-  if (!isValidString(className)) {
-    throw new Error(`Invalid ClassName provided. Must be a valid string.`);
-  }  
-  
-  const emojiSupport = emojiSupported();
-  
-  if (emojiSupport) {
-    return;
-  }
-  
-  if (!emojiSupport) {
-    await twemoji.parse(element, {
-      base: cdn
-    });
-  }
-};
 
-/**
- * Checks if emojis are supported and falls back to Twemoji if they are not.
- * @param {Element|DocumentFragment} [element] - The DOM element to parse for emojis.
- * @param {string} [cdn] - The CDN URL for Twemoji assets.
- * @param {string} className - The CSS class name to apply to the replaced emoji images.
- * @returns {Promise<void>} A promise that resolves when the fallback is complete.
- * @throws {Error} If there is an error during the fallback process.
- */
-export async function emojiFallback(element, cdn, className) {
-  try {
-    return await parseEmoji(element, cdn, className);
-  } catch (err) {
-    throw new Error(`Emoji-Fallback.js Error: ${err?.message || err}`);
-  }
+
+		let playlist = null;
+
+		if (isURL) {
+			/// FETCH & PARSE M3U FROM URL
+			const url = url_or_string
+			const rsp = await fetch(url),
+				data = await rsp.text();
+			if (rsp.status != 200) {
+				// HTTP STATUS ERROR
+				throw {
+					iptv_parser_error: `HTTP ${rsp.status} error`
+				}
+			}
+			playlist = data
+		} else {
+			// PARSE M3U FROM FILE
+			playlist = url_or_string
+		}
+
+
+
+
+
+		let foundData;
+
+		// CHECK IF PLAYLIST / M3U is valid...
+		try {
+			const m3uFile = await CheckIfValidPlayList(playlist)
+			// playlist was valid - return it!
+			return m3uFile
+		} catch (err) {
+			// return any errors if invalid!
+			return err
+		}
+
+
+
+
+
+		async function CheckIfValidPlayList(playlist) {
+			const content = playlist
+
+			let lines = content.split('\n').map(parseLine)
+			let firstLine = lines.find(l => l.index === 0)
+
+			if (!firstLine || !/^#EXTM3U/.test(firstLine.raw)) {
+				// PLAYLIST / M3U file is not valid :(
+				throw {
+					iptv_parser_error: "Playlist is not valid"
+				}
+
+			} else {
+				// Playlist was valid! 
+				const result = parser.parse(playlist)
+				/// return the data
+				return await result
+
+			}
+
+			function parseLine(line, index) {
+				return {
+					index,
+					raw: line
+				}
+			}
+		}
+
+	}
+	/// END OF CORE FUNCTION(s) for IPTV-Parser.js ///
+
+
+
+	/// CALL THE IPTV-Parser.JS //
+	try {
+		if (isURL) {
+			// FETCH & PARSE M3U  LINKS 
+			let result = await fetchAndParse(url, "url");
+			return result
+		} else {
+			// PARSE M3U FROM STRING
+			let result = await fetchAndParse(url);
+			return result
+		}
+
+	} catch (err) {
+
+		// return any errors! 
+		return err
+
+	}
 }
