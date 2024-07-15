@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const packageData = require('../license.config.js');
+const packageData = require('./license.config.js');
 
 const TerserPlugin = require('terser-webpack-plugin');
 
