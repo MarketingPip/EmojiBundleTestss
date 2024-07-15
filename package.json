@@ -13,7 +13,7 @@
     "build": "webpack --config ./src/webpack.config.js"
   },
   "dependencies": {
-    "twemoji": "^14.0.2"
+    "iptv-playlist-parser": "^0.12.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.8",
