@@ -1,7 +1,14 @@
 {
-  "name": "mmjj",
-  "version": "0.0.5",
-  "description": "kkk",
+  "name": "@MarketingPipeline/Emoji-Fallback",
+  "description": "A JavaScript library that provides support for emojis on ALL web browsers!",
+  "version": "2.0.0",
+  "homepage": "https://github.com/MarketingPipeline/Emoji-Fallback.js",
+  "license": "MIT",
+  "main": "./dist/emoji-fallback.min.js",
+  "author": {
+    "name": "MarketingPipeline",
+    "url": "https://github.com/MarketingPipeline"
+  },
   "scripts": {
     "build": "webpack --config ./src/webpack.config.js"
   },
