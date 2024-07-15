@@ -56,7 +56,7 @@ async function fetchPlaylist(url) {
  * @returns {Promise<Object>} - Parsed playlist content.
  * @throws {Error} - If the playlist is invalid.
  */
-async function validatePlaylist(content) {
+async function validateAndParsePlaylist(content) {
     const lines = content.split('\n').map((line, index) => ({ index, raw: line }));
     const firstLine = lines.find(line => line.index === 0);
 
