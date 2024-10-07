@@ -12,7 +12,7 @@
  *
  * @returns {string} The colored output string.
  */
-export function ctree() {
+export default function ctree() {
   /**
    * Represents an RGB color.
    *
